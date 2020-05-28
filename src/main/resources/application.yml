@@ -1,0 +1,47 @@
+spring:
+  profiles: test
+---
+spring:
+  profiles: local
+  cloud:
+    stream:
+      bindings:
+        curateCustomer-in-0:
+          destination: avroconnect.poc.customers
+          content-type: application/*+avro
+        curateCustomer-out-0:
+          destination: curatedcustomer
+          content-type: application/*+avro
+      kafka:
+        streams:
+          binder:
+            application-id: customercurator
+            configuration:
+              schema.registry.url: http://localhost:9081
+              default:
+                key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+                value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+---
+spring:
+  profiles: sandbox
+  cloud:
+    stream:
+      bindings:
+        curateCustomer-in-0:
+          destination: avroconnect.poc.customers
+          content-type: application/*+avro
+        curateCustomer-out-0:
+          destination: curatedcustomer
+          content-type: application/*+avro
+      kafka:
+        streams:
+          binder:
+            brokers: broker:29092
+            application-id: customercurator
+            configuration:
+              schema.registry.url: http://schema-registry:8081
+              default:
+                key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+                value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+
+

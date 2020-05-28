@@ -1,0 +1,31 @@
+{
+    "name": "deb-source-connector",
+    "config": {
+        "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+        "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "key.converter.schemas.enable": "false",
+        "value.converter": "io.confluent.connect.avro.AvroConverter",
+        "value.converter.schema.registry.url": "http://localhost:8081",
+        "value.converter.schemas.enable": "true",
+        "internal.value.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "internal.value.converter.schemas.enable": false,
+        "database.hostname": "localhost",
+        "database.port": "3306",
+        "database.user": "root",
+        "database.password": "******",
+        "database.server.name": "avroconnect",
+        "database.history.kafka.bootstrap.servers": "localhost:9092",
+        "database.history.kafka.topic": "debizium-mysql-history",
+        "include.schema.changes": false,
+        "transforms": "unwrap,AddNamespace,ExtractField",
+        "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+        "transforms.unwrap.drop.tombstones": false,
+        "transforms.unwrap.delete.handling.mode": "rewrite",
+        "transforms.AddNamespace.type": "org.apache.kafka.connect.transforms.SetSchemaMetadata$Value",
+        "transforms.AddNamespace.schema.name": "com.example.model.Customer",
+        "transforms.ExtractField.type": "org.apache.kafka.connect.transforms.ExtractField$Key",
+        "transforms.ExtractField.field": "customerNumber",
+        "table.ignore.builtin": true,
+        "database.whitelist": "poc"
+    }
+}
